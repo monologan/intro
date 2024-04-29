@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>RADICADO SELLO</title>
+    <script type="text/javascript" src="jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <script src="js/bootstrap.js"></script>
+
+    <style>
+        /* Aplicar margen de 200px al contenedor principal */
+        .contenedor-principal {
+            margin: 200px;
+        }
+
+        /* Reducir el tamaño de las cajas de texto a la mitad */
+        .form-control {
+            width: 50%;
+            margin: auto; /*centra las celdas*/
+            background-color: #f2f2f2; /* Color de fondo gris claro */
+            border: 1px solid #5e5e5e; /* Borde gris */
+            border-radius: 5px; /* Bordes redondeados */
+            padding: 8px; /* Espacio interno */
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#btnGuardar").on("click",function(){
+                alert('SE ESTA GUARDANDO BIEN , FUNCION BUENA, BUSCAR COMANDOS PARA LA CREACION DE LA TABLA DE CONTENIDOS')
+            });
+        });
+
+            $(document).ready(function(){
+                $("#btnSello").on("click",function(){
+
+            frontal = true;
+            function Vertical() {
+                $("#div1").addClass("GirarDiv")
+                frontal = false;
+            }
+            function Horizontal() {
+                $("#div1").removeClass("GirarDiv").addClass("horizontal")
+
+                elMovimiento.style.left = (300) + "px";
+                frontal = true;
+            }
+            
+            $(function () {
+                agregarDatosRadicado();
+            });
+            xActual = 2;
+            yActual = 2;
+            function agregarDatosRadicado() {
+                var anexos = "";
+                _externo = JSON.parse(localStorage.getItem('Externo')); 
+                _Radicado = JSON.parse(localStorage.getItem('Radicado')); 
+                if (_Radicado.observacionesAnexo != "" && _Radicado.observacionesAnexo !=null) {
+                    var anexos = "</br>Descripción Anexo: " + _Radicado.observacionesAnexo;
+                }
+                var fecha = new Date();
+                var hora = convertirFormatoHora(fecha.getHours(), fecha.getMinutes());
+                var dia = checkTime(fecha.getDate()) + "/" + checkTime(fecha.getMonth() + 1) + "/" + fecha.getFullYear();
+                document.getElementById("Asunto").innerHTML = "Asunto: " + _Radicado.codigoTRD + "-" + _Radicado.serieTRD + "-" + _Radicado.subserieTRD +", "+_Radicado.asunto + anexos;
+                document.getElementById("N_Radicado").innerHTML = "Radicado: " + _Radicado.tipo + _Radicado.año + _Radicado.consecutivo + ", Folios: " + _Radicado.numeroFolios;
+                document.getElementById("Fecha").innerHTML = "Fecha: " + dia + ", Hora: " + hora
+                var titulo = _Radicado.asunto;
+                $(this).attr("title", quitaAcentos(titulo));
+            }
+
+            function manejarErrorAjax(err) {
+                console.log(err.responseText)
+            }
+            function carga() {
+                posicion = 0;
+
+                // IE
+                if (navigator.userAgent.indexOf("MSIE") >= 0) navegador = 0;
+                // Otros
+                else navegador = 1;
+
+            }
+            function quitaAcentos(str) {
+                for (var i = 0; i < str.length; i++) {
+                    //Sustituye "á é í ó ú"
+                    if (str.charAt(i) == "á") str = str.replace(/á/, "a");
+                    if (str.charAt(i) == "é") str = str.replace(/é/, "e");
+                    if (str.charAt(i) == "í") str = str.replace(/í/, "i");
+                    if (str.charAt(i) == "ó") str = str.replace(/ó/, "o");
+                    if (str.charAt(i) == "ú") str = str.replace(/ú/, "u");
+                }
+                return str;
+            }
+            function evitaEventos(event) {
+                // Funcion que evita que se ejecuten eventos adicionales
+                if (navegador == 0) {
+                    window.event.cancelBubble = true;
+                    window.event.returnValue = false;
+                }
+                if (navegador == 1) event.preventDefault();
+            }
+
+            function comienzoMovimiento(event, id) {
+                elMovimiento = document.getElementById(id);
+
+                $('#imagenFlotante').fadeOut(500);
+                $('.btPosicion').fadeOut(500);
+                // Obtengo la posicion del cursor
+                if (navegador == 0) {
+                    cursorComienzoX = window.event.clientX + document.documentElement.scrollLeft + document.body.scrollLeft;
+                    cursorComienzoY = window.event.clientY + document.documentElement.scrollTop + document.body.scrollTop;
+
+                    document.attachEvent("onmousemove", enMovimiento);
+                    document.attachEvent("onmouseup", finMovimiento);
+                }
+                if (navegador == 1) {
+                    cursorComienzoX = event.clientX + window.scrollX;
+                    cursorComienzoY = event.clientY + window.scrollY;
+
+                    document.addEventListener("mousemove", enMovimiento, true);
+                    document.addEventListener("mouseup", finMovimiento, true);
+
+
+                }
+
+                elComienzoX = parseInt(elMovimiento.style.left);
+                elComienzoY = parseInt(elMovimiento.style.top);
+                // Actualizo el posicion del elemento
+                elMovimiento.style.zIndex = ++posicion;
+
+                evitaEventos(event);
+            }
+
+            function enMovimiento(event) {
+                xActual = 0, yActual = 0;
+                if (navegador == 0) {
+                    xActual = window.event.clientX + document.documentElement.scrollLeft + document.body.scrollLeft;
+                    yActual = window.event.clientY + document.documentElement.scrollTop + document.body.scrollTop;
+                }
+                if (navegador == 1) {
+                    xActual = event.clientX + window.scrollX;
+                    yActual = event.clientY + window.scrollY;
+
+                }
+
+                if (elComienzoX + xActual - cursorComienzoX < 564 && elComienzoX + xActual - cursorComienzoX > -80 && frontal) {
+                    //console.log(elComienzoX + xActual - cursorComienzoX)
+                    elMovimiento.style.left = (elComienzoX + xActual - cursorComienzoX) + "px";
+
+                } else if (elComienzoX + xActual - cursorComienzoX < 650 && elComienzoX + xActual - cursorComienzoX > -78 && !frontal) {
+
+                    elMovimiento.style.left = (elComienzoX + xActual - cursorComienzoX) + "px";
+                }
+                if (elComienzoY + yActual - cursorComienzoY >= -18 && elComienzoY + yActual - cursorComienzoY <= 958 && frontal) {
+
+                    elMovimiento.style.top = (elComienzoY + yActual - cursorComienzoY) + "px";
+                } else if (elComienzoY + yActual - cursorComienzoY >= -30 && elComienzoY + yActual - cursorComienzoY <= 850 && !frontal) {
+                    console.log(elComienzoY + yActual - cursorComienzoY)
+                    elMovimiento.style.top = (elComienzoY + yActual - cursorComienzoY) + "px";
+                }
+
+
+                evitaEventos(event);
+            }
+
+            function finMovimiento(event) {
+                //alert(elComienzoY + yActual - cursorComienzoY)
+                //alert(elComienzoX + xActual)
+                if (navegador == 0) {
+                    document.detachEvent("onmousemove", enMovimiento);
+                    document.detachEvent("onmouseup", finMovimiento);
+                    console.log(xActual + yActual)
+                }
+                if (navegador == 1) {
+                    document.removeEventListener("mousemove", enMovimiento, true);
+                    document.removeEventListener("mouseup", finMovimiento, true);
+                    //alert("X: " + xActual + " Y: " + yActual);
+                    $('#imagenFlotante').fadeIn(500);
+                    $('.btPosicion').fadeIn(500);
+                }
+            }
+
+            window.onload = carga;
+            function PrintElem(elem) {
+                $('.btPosicion').hide();
+                //Popup($(elem).html());
+                Popup("");
+                window.close();
+            }
+
+            function Popup(data) {
+                $('#imagenFlotante').fadeOut(0);
+                window.print();
+                return true;
+            }
+                        });
+                    });
+
+
+    </script>
+
+</head>
+<body>
+    <div class="container text-center mt-5">
+        <h1>EMPEZAR PROCESO DE RADICADO</h1>
+    </div>
+
+    <div class="container text-center mt-5">
+        <h2>Datos de Radicacion</h2>
+        <hr>
+        <div class="row">
+            <div class="col-sm-4">
+                <h6>Usuario que radica</h6>
+                <p>FUNCIONARIA LUZ KARIME</p> 
+            </div>
+            <div class="col-sm-4">
+                <h6>Fecha de radicacion</h6>
+                <p id="fecha"></p>
+                <script>
+                    var fechaActual = new Date();
+                    var opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                    var fechaFormateada = fechaActual.toLocaleDateString('es-ES', opcionesFecha);
+                    document.getElementById('fecha').textContent = fechaFormateada;
+                </script>
+            </div>
+            <div class="col-sm-4">
+                <h6>Area que radica</h6>
+                <p>VENTANILLA UNICA</p>
+            </div>
+        </div>
+        <hr>  
+    </div>
+
+    <div class="container text-center mt-5">
+        <h2>Datos del Remitente</h2>
+        <hr>
+        <div class="form-group">
+            <input type="text-center" id="txtNombreRemitente" class="form-control" placeholder="Nombre del remitente"><br>
+            <input type="text" id="txtEmpresaRemitente" class="form-control" placeholder="Empresa del remitente"><br>
+            <input type="text" id="txtCargoRemitente" class="form-control" placeholder="Cargo del remitente"><br>
+            <input type="text" id="txtDirRespuesta" class="form-control" placeholder="Direccion de respuesta"><br>
+            <input type="number" id="txtDocumento" class="form-control" placeholder="Documento NIT/CC/CE/Pasaporte del remitente"><br>
+            <input type="text" id="txtCorreo" class="form-control" placeholder="Correo electronico de respuesta"><br>
+        </div>
+    </div>
+
+    <div class="container text-center mt-5">
+        <h2>Datos del Destinatario</h2>
+        <hr>
+        <div class="form-group">
+            <input type="text" id="txtNombreFuncionario" class="form-control" placeholder="Nombre del funcionario"><br>
+            <h5>  Area del funcionario: 
+            <select class="form-control">
+                <option value="GERENCIA">GERENCIA</option>
+                <option value="AREA FINANCIERA">AREA FINANCIERA</option>
+                <option value="COMERCIAL">COMERCIAL</option>
+                <option value="JURIDICA">JURIDICA</option>
+                <option value="CONTROL">CONTROL</option>
+                <option value="TECNICA">TECNICA</option>
+                <option value="TALENTO HUMANO">TALENTO HUMANO</option>
+                <option value="GESTION DOCUMENTAL">GESTION DOCUMENTAL</option>
+            </select><br> </h5>
+        </div>
+    </div>
+
+    <div class="container text-center mt-5">
+        <h2>Datos del Comunicado</h2>
+        <hr>
+        <div class="form-group">
+            <h5>  Cual es el canal de recepciòn: 
+            <select class="form-control">
+                <option value="Fisico">Fisico</option>
+                <option value="Electronico">Electronico</option>
+                <option value="Mensajeria">Mensajeria</option>    
+            </select></h5>
+            <h5>  Seleccione el tipo documental: 
+            <select class="form-control">
+                <option value="Correspondencia">Correspondencia</option>
+                <option value="Facturas">Facturas</option>
+                <option value="Contratos y acuerdos">Contratos y acuerdos</option>
+                <option value="Formularios">Formularios</option>
+                <option value="Informes">Informes</option> 
+                <option value="Documentos internos">Documentos internos</option>
+                <option value="Documentos legales y regulatorios">Documentos legales y regulatorios</option>
+                <option value="Documentos de recursos humanos">Documentos de recursos humanos</option>
+                <option value="Solicitudes">Solicitudes</option>  
+                <option value="Recibos">Recibos</option>   
+                <option value="Documentos tecnicos">Documentos tecnicos</option>       
+            </select></h5><br>
+            <input type="number" id="txtNumFolios" class="form-control" placeholder="Numero de folios"><br>
+            <input type="number" id="txtSerie" class="form-control" placeholder="Numero de serie"><br>
+            <input type="number" id="txtSubserie" class="form-control" placeholder="Numero de subserie"><br>
+            <textarea id="Asunto" rows="4" class="form-control" placeholder="Asunto"></textarea><br>
+            <textarea id="comentarios" rows="4" class="form-control" placeholder="Comentarios o Anexos (CDs, USB)"></textarea>
+            <!-- FALTA DIRECCION DEL SERVIDOR PARA CARGAR DOCUMENTOS  -->
+            <h2>Subir Archivo</h2>
+            <form action="http://104.251.223.181/archivosubidos" method="post" enctype="multipart/form-data">
+                <input type="file" name="archivo" id="archivo">
+                <input type="submit" value="Subir Archivo">
+            </form>
+        </div>
+    </div>
+    <div class="text-center mt-3">
+        <input type="button" class="btn btn-success" value="Guardar" id="btnGuardar">
+        <input type="button" class="btn btn-dark" value="Imprimir Sello" id="btnSello">
+        <input type="button" class="btn btn-danger" value="Eliminar" id="btnEliminar">
+    </div>
+
+    
+</body>
+</html>

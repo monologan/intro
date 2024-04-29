@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SELLO-RADICACION</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <style>
+        /* Estilo para el contenedor de la imagen y el texto */
+        .container {
+            width: 248px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .box {
+            border: 1px solid rgb(61, 61, 61);
+            height: 124px;
+            width: 248px;
+            max-width: 80%;
+            align-items: center;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%; /* Ajusta el ancho máximo de la imagen */
+            height: auto; /* Mantiene la proporción de la imagen */
+        }
+
+        /* Estilo para el texto */
+        p {
+            margin: 0; /* Elimina el margen */
+            font-size: 9px; /* Tamaño de letra más pequeño */
+            max-width: 100%; /* Límite de ancho del texto */
+            overflow: hidden; /* Oculta el texto que sobrepasa el límite de ancho */
+            text-overflow: ellipsis; /* Agrega puntos suspensivos (...) al final del texto cortado */
+        }
+    </style>
+</head>
+<body>
+    <div class="box" id="downloadBox">
+        <!--<div class="container">-->
+            <img src="imagenes/LOGOINFI.jpg" alt="Imagen" width="248" height="80">
+            <div>
+                <p>Asunto:<span id="Asunto"></span></p>
+                <p>Radicado: [Radicado]</p>
+                <p>Folios:<span id="txtNumFolios"></span></p>
+                <p>Fecha y hora actual: <span id="fechaHora"></span></p>
+            </div>
+        <!--</div>-->
+    </div>
+
+    <a href="#" id="downloadLink" download="box_content.jpg">Descargar Sello</a>
+    
+    
+    <script>
+        // Obtener la fecha y hora actual
+        var fechaHoraActual = new Date();
+        var fechaHoraFormato = fechaHoraActual.toLocaleString('es-ES');
+
+        // Mostrar la fecha y hora actual en el elemento con id="fechaHora"
+        document.getElementById("fechaHora").innerText = fechaHoraFormato;
+
+        // Función para descargar el contenido del box como una imagen JPG
+        function descargarBox() {
+             var box = document.getElementById("downloadBox");
+
+            // Utilizar html2canvas para convertir el contenido HTML en una imagen
+                html2canvas(document.getElementById("downloadBox")),{
+                onrendered: function(canvas) {
+                // Convertir la imagen en formato base64
+                var imgData = canvas.toDataURL("image/png");
+                var imgMostrar = document.createElement("img");
+                imgMostrar.src = imgData;
+                
+                // Añadir la imagen al cuerpo del documento o a cualquier otro lugar deseado
+                document.body.appendChild(imgMostrar);
+
+                // Crear un enlace de descarga
+                var link = document.getElementById("downloadLink");
+                link.href = imgData;
+                }
+            };
+        }
+
+        window.onload = function() {
+            
+            //funcion trae el la variable asunto
+            var txtAsunto = document.getElementById("Asunto").value;
+            document.getElementById("Asunto").innerText = txtAsunto;
+
+            var txtNumFolios = document.getElementById("txtNumFolios").value;
+            document.getElementById("txtNumFolios").innerText = txtAsunto;
+
+            // Llamar a la función de descarga al cargar la página
+            descargarBox();
+        };
+    </script>
+</body>
+</html>
+
+
+
+<!--<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GENERADOR DE SELLO</title>
+<style>
+    #canvas{ width: 248px; 
+             height: 98px; 
+             border: 5px ☐ red solid; 
+             text-align:end;
+             display: flex;
+             place-items:inherit;
+             object-fit: cover;
+             background: url("imagenes/infitulualogo.jpg");
+             }
+</style>
+
+</head>
+
+<body>
+    <div id="canvas">
+        <div id="contenido">
+            <h6> ASUNTO:</h6>
+            <h6> RADICADO:</h6>
+        </div>
+    </div>
+    
+    <button id="btnempezar">EMPEZAR</button>
+    <button id="btndescargar">DESCARGAR</button>
+</body>
+</html> -->
