@@ -34,18 +34,35 @@
     
     <div class="container">
         <h1>Seleccione el tipo de radicacion que desea comenzar</h1>
-        <button class="btn btn-success" onclick="accion('ENTRADA')">ENTRADA</button>
-        <button class="btn btn-warning" onclick="accion('SALIDA')">SALIDA</button>
-        <button class="btn btn-info" onclick="accion('INTERNO')">INTERNO</button>
-        <button class="btn btn-secondary" onclick="accion('CONSULTA')">CONSULTA </button>
+        <button class="btn btn-success" onclick="redireccionar1('Entrada_radicado.html')">ENTRADA</button>
+        <button class="btn btn-warning" onclick="redireccionar2('SALIDA ')">SALIDA</button> <!--COLOCAR EL HTML DE SALIDA_RADICADO.HTML-->
+        <button class="btn btn-info" onclick="redireccionar3('INTERNO')">INTERNO</button><!--COLOCAR EL HTML DE INTERNO_RADICADO.HTML-->
+        <button class="btn btn-secondary" onclick="redireccionar4('CONSULTA')">CONSULTA </button><!--COLOCAR EL HTML DE CONSULTA_RADICADO.HTML-->
     </div>
 
     <script>
-        // Función para manejar la acción de los botones
-        function accion(titulo) {
-            alert("Has seleccionado: " + titulo);
-            // Aquí puedes agregar la lógica correspondiente a cada botón
+
+        // Función para redireccionar a la página correspondiente
+        function redireccionar1(pagina) {
+            alert("Empezaras un radicado de ENTRADA, pulsa aceptar para continuar");
+            window.location.href = pagina;
         }
+
+        function redireccionar2(pagina) {
+            window.location.href = pagina;
+            alert("Has seleccionado: SALIDA");
+        }
+
+        function redireccionar3(pagina) {
+            window.location.href = pagina;
+            alert("Has seleccionado: INTERNO");
+        }
+
+        function redireccionar4(pagina) {
+            window.location.href = pagina;
+            alert("Has seleccionado: CONSULTA");
+        }
+       
     </script>
 </body>
 </html>
