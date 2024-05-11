@@ -1,0 +1,16 @@
+
+
+/* Aplicar margen de 200px al contenedor principal */
+.contenedor-principal {
+    margin: 200px;
+}
+
+/* Reducir el tamaño de las cajas de texto a la mitad */
+.form-control {
+    width: 50%;
+    margin: auto; /*centra las celdas*/
+    background-color: #f2f2f2; /* Color de fondo gris claro */
+    border: 1px solid #5e5e5e; /* Borde gris */
+    border-radius: 5px; /* Bordes redondeados */
+    padding: 8px; /* Espacio interno */
+}
