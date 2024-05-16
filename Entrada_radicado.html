@@ -23,12 +23,11 @@
                 var numeroRadicado = generarNumeroRadicado(numeroConsecutivo);
                 document.getElementById('radicado').textContent = numeroRadicado;
                 numeroConsecutivo++; // Incrementamos el número consecutivo
-        }
-                //onclick="location.href='http://127.0.0.1:5500/bootstrap/bootstrap/intro/imagensello1.html'" envia a la pagina de creacion del sello
-                //src="bootstrap\bootstrap\intro\imagensello.html"; // llama a la creaion de el sello como imagen
-                //src="bootstrap\bootstrap\intro\js\Sello.js"; // hace el llamado al script del sello que se encuentra en la misma carpeta
-                alert('SU NUMERO DE RADICADO ES ' + numeroRadicado +' REVISE QUE SE ENCUENTRE BIEN DILIGENCIADO EL RADICADO Y ACEPTE PARA CONTINUAR CON LA IMPRESION DEL SELLO')
+                }
+                   
+                alert('SU NUMERO DE RADICADO ES ' + numeroRadicado + numeroConsecutivo + ' REVISE QUE SE ENCUENTRE BIEN DILIGENCIADO EL RADICADO Y ACEPTE PARA CONTINUAR CON LA IMPRESION DEL SELLO')
                 location.href='imagensello1.html' // ESTE SI ME FUNCIONO 
+
             });
         });
     </script>
@@ -48,10 +47,9 @@
             <div class="col-sm-3">
                 <h5>Fecha de radicacion</h5>
                 <p id="fecha"></p>
-
-                </script>
-                <script>
-                    // JS PARA TRAER LA FECHA ACTUAL
+                
+                <script>// JS PARA TRAER LA FECHA ACTUAL D
+                    
                     var fechaActual = new Date();
                     var opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
                     var fechaFormateada = fechaActual.toLocaleDateString('es-ES', opcionesFecha);
@@ -62,8 +60,7 @@
             <div class="col-sm-3" , >
                 <h5>Número de radicado</h5>
                 <p id="radicado"></p>
-
-                <script>
+                <script>//FUNCION PARA GENERAR EL NUMERO DE RADICADO
                     // Generar el número de radicado
                     var numeroRadicado = generarNumeroRadicado();
                     document.getElementById('radicado').textContent = numeroRadicado;
@@ -78,7 +75,7 @@
                     // Construir el número de radicado con el formato Eddmmaaaa-xxxx
                     var numeroRadicado = 'E' + dia + mes + año + '-' + consecutivo;
                     return numeroRadicado;
-    }
+                    }
     
                     function agregarCeros(numero) {
                         return numero < 10 ? '0' + numero : numero;
@@ -93,7 +90,7 @@
         </div>
         <hr>  
     </div>
-<form>
+<form method="POST"> 
         <div class="container text-center mt-5">
             <h2>Datos del Remitente</h2>
             <hr>
@@ -155,15 +152,18 @@
             <input type="number" id="txtSubserie" name="txtSubserie" class="form-control" placeholder="Numero de subserie" required><br>
             <textarea id="Asunto" rows="4" class="form-control" name="Asunto" placeholder="Asunto del radicado" required></textarea><br>
             <textarea id="comentarios" rows="4" class="form-control" name="comentarios" placeholder="Comentarios o Anexos (CDs, USB)"></textarea>
+            
             <!-- FALTA DIRECCION DEL SERVIDOR PARA CARGAR DOCUMENTOS  -->
             <h2>Subir Archivo</h2>
             <!-- ACA SE CARGAN LOS ARCHIVOS RADICADOS -->
-            <form action="http://104.251.223.181/archivosubidos" method="post" enctype="multipart/form-data">
+
+            <form action="Entrada_radicado.html" method="post" enctype="multipart/form-data">
                 <input type="file" name="archivo" id="archivo" required>
-                <input type="submit" value="Subir Archivo">
+                <input type="submit" class="btn btn-danger" value="Subir Archivo" >
             </form>
         </div>
     </div>
+   
     <div class="text-center mt-3">
         <input type="button" class="btn btn-success" value="Guardar" id="btnGuardar">
         <input type="submit" class="btn btn-dark" value="Imprimir Sello" id="btnSello">
